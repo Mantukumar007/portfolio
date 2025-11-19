@@ -304,35 +304,6 @@ function createParticles() {
 createParticles();
 
 // ========================================
-// Contact Form Submission
-// ========================================
-const contactForm = document.getElementById('contactForm');
-
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Get form values
-    const formData = new FormData(contactForm);
-    
-    // Show success message (you can customize this)
-    alert('Thank you for your message! I will get back to you soon.');
-    
-    // Reset form
-    contactForm.reset();
-    
-    // In a real application, you would send the data to a server
-    // Example:
-    // fetch('your-api-endpoint', {
-    //     method: 'POST',
-    //     body: formData
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     console.log('Success:', data);
-    // });
-});
-
-// ========================================
 // Download Resume Function
 // ========================================
 const downloadResumeBtn = document.getElementById('downloadResume');
@@ -633,4 +604,5 @@ document.addEventListener('mousemove', (e) => {
         
         shape.style.transform = `translate(${x}px, ${y}px)`;
     });
+
 });
