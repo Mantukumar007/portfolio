@@ -19,10 +19,7 @@
 </head>
 <body>
     
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="spinner"></div>
-    </div>
+    <!-- Preloader Removed -->
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -41,6 +38,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#skills">Skills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#experience">Experience</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">Projects</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#education">Education</a>
@@ -62,7 +65,7 @@
                     <div class="hero-content">
                         <h4 class="hero-subtitle">Hello, I'm</h4>
                         <h1 class="hero-title">Mantu Kumar</h1>
-                        <h3 class="hero-description">Technology Enthusiast & Frontend Dev</h3>
+                        <h3 class="hero-description" id="typing-text"></h3>
                         <p class="hero-text">B.Tech Student specializing in technology with a passion for innovative solutions and continuous learning.</p>
                         <div class="hero-buttons">
                             <a href="#contact" class="btn btn-primary btn-lg me-3">Get In Touch</a>
@@ -84,7 +87,7 @@
                             <div class="floating-shape shape-1"></div>
                             <div class="floating-shape shape-2"></div>
                             <div class="floating-shape shape-3"></div>
-                            <i class="fas fa-user-circle profile-icon"></i>
+                            <img src="profile.jpg" alt="Mantu Kumar" class="profile-img" onerror="this.src='https://via.placeholder.com/300/3498db/ffffff?text=Profile+Pic'">
                         </div>
                     </div>
                 </div>
@@ -118,7 +121,7 @@
                         <div class="about-info mt-4">
                             <div class="info-item">
                                 <i class="fas fa-map-marker-alt"></i>
-                                <span><strong>Location:</strong> Mashrakh, Saran, Bihar - 841417</span>
+                                <span><strong>Location:</strong> Vill.- Doila, P.O - Mashrakh, Saran, Bihar - 841417</span>
                             </div>
                             <div class="info-item">
                                 <i class="fas fa-envelope"></i>
@@ -145,8 +148,43 @@
             <div class="section-title text-center mb-5">
                 <h2 class="title">My Skills</h2>
                 <div class="title-underline"></div>
-                <p class="subtitle">Core competencies and abilities</p>
+                <p class="subtitle">Technical and Professional Competencies</p>
             </div>
+
+            <h4 class="text-center mb-4 text-primary">Technical Skills</h4>
+            <div class="row g-4 mb-5">
+                <!-- Technical Skills -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-html5"></i></div>
+                        <h4>HTML5 & CSS3</h4>
+                        <p>Modern layouts & styling</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-js"></i></div>
+                        <h4>JavaScript</h4>
+                        <p>DOM manipulation & ES6+</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-bootstrap"></i></div>
+                        <h4>Bootstrap 5</h4>
+                        <p>Responsive design</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="skill-card">
+                        <div class="skill-icon"><i class="fab fa-react"></i></div>
+                        <h4>React.js</h4>
+                        <p>Component based UI</p>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="text-center mb-4 text-primary">Soft Skills</h4>
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3">
                     <div class="skill-card">
@@ -224,6 +262,108 @@
         </div>
     </section>
 
+    <!-- Experience Section -->
+    <section id="experience" class="experience-section py-5">
+        <div class="container">
+            <div class="section-title text-center mb-5">
+                <h2 class="title">Work Experience</h2>
+                <div class="title-underline"></div>
+                <p class="subtitle">My professional journey</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">Dec 2024 - Present</div>
+                        <h3>CMS Executive</h3>
+                        <h5>Amnex Infotechnologies Pvt Ltd</h5>
+                        <p class="text-primary mb-2"><small><i class="fas fa-building me-1"></i>Deployed at: District Panchayati Raj Office, Saran (Govt. of Bihar)</small></p>
+                        <p><strong>Project:</strong> Mukhyamantri Gramin Solar Street Lights (BREDA, Patna) <br>
+                        <strong>Role:</strong> MIS Support & Report Preparation <br>
+                        Reviewing street light operational status through software and extracting functional vs non-functional reports.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section py-5">
+        <div class="container">
+            <div class="section-title text-center mb-5">
+                <h2 class="title">My Projects</h2>
+                <div class="title-underline"></div>
+                <p class="subtitle">Some of my recent work</p>
+            </div>
+            <div class="row g-4">
+                <!-- Project 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card">
+                        <div class="project-img">
+                            <img src="https://via.placeholder.com/600x400/1a1f3a/ffffff?text=Project+1" alt="Project 1" class="img-fluid">
+                            <div class="project-overlay">
+                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-eye me-1"></i> Live Demo</a>
+                                <a href="#" class="btn btn-outline-light btn-sm"><i class="fab fa-github me-1"></i> Code</a>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h4>E-Commerce Website</h4>
+                            <p>A responsive e-commerce front-end built with HTML, CSS, and Bootstrap.</p>
+                            <div class="project-tags">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>Bootstrap</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card">
+                        <div class="project-img">
+                            <img src="https://via.placeholder.com/600x400/1a1f3a/ffffff?text=Project+2" alt="Project 2" class="img-fluid">
+                            <div class="project-overlay">
+                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-eye me-1"></i> Live Demo</a>
+                                <a href="#" class="btn btn-outline-light btn-sm"><i class="fab fa-github me-1"></i> Code</a>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h4>Weather App</h4>
+                            <p>A weather application fetching real-time data using OpenWeather API.</p>
+                            <div class="project-tags">
+                                <span>JavaScript</span>
+                                <span>API</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card">
+                        <div class="project-img">
+                            <img src="https://via.placeholder.com/600x400/1a1f3a/ffffff?text=Project+3" alt="Project 3" class="img-fluid">
+                            <div class="project-overlay">
+                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-eye me-1"></i> Live Demo</a>
+                                <a href="#" class="btn btn-outline-light btn-sm"><i class="fab fa-github me-1"></i> Code</a>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h4>Portfolio Website</h4>
+                            <p>Personal portfolio website with dark mode and GSAP animations.</p>
+                            <div class="project-tags">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>GSAP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Education Section -->
     <section id="education" class="education-section py-5">
         <div class="container">
@@ -288,7 +428,7 @@
                             </div>
                             <div class="contact-details">
                                 <h5>Address</h5>
-                                <p>VPO- Mashrakh, Saran<br>Bihar - 841417</p>
+                                <p>Vill.- Doila, P.O - Mashrakh<br>Dist.- Saran, Bihar - 841417</p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -313,7 +453,8 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="contact-form">
-                        <form id="contactForm" action="https://submit-form.com/Hv8fC9LlL" method="POST">
+                        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                            <input type="hidden" name="access_key" value="cc77b90e-24fc-48ed-90e0-2c59ec85e524">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <input type="text" name="name" class="form-control" placeholder="Your Name" required>
@@ -363,6 +504,10 @@
     <button id="scrollTop" class="scroll-top">
         <i class="fas fa-arrow-up"></i>
     </button>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="custom-cursor"></div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

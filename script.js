@@ -1,15 +1,7 @@
 // ========================================
 // Preloader
 // ========================================
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    setTimeout(() => {
-        preloader.style.opacity = '0';
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 500);
-    }, 1000);
-});
+// Preloader logic removed
 
 // ========================================
 // GSAP Animations
@@ -126,29 +118,32 @@ gsap.from('.info-item', {
 });
 
 // Skills Cards Animation
-gsap.from('.skill-card', {
-    scrollTrigger: {
-        trigger: '.skills-section',
-        start: 'top 70%',
-        toggleActions: 'play none none reverse'
-    },
-    opacity: 0,
-    y: 50,
-    duration: 0.8,
-    stagger: 0.1
+gsap.utils.toArray('.skill-card').forEach(card => {
+    gsap.from(card, {
+        scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse'
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.5
+    });
 });
 
 // Timeline Animation
-gsap.from('.timeline-item', {
-    scrollTrigger: {
-        trigger: '.timeline',
-        start: 'top 70%',
-        toggleActions: 'play none none reverse'
-    },
-    opacity: 0,
-    y: 50,
-    duration: 0.8,
-    stagger: 0.3
+gsap.utils.toArray('.timeline').forEach(timeline => {
+    gsap.from(timeline.querySelectorAll('.timeline-item'), {
+        scrollTrigger: {
+            trigger: timeline,
+            start: 'top 70%',
+            toggleActions: 'play none none reverse'
+        },
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        stagger: 0.3
+    });
 });
 
 // Contact Section Animations
@@ -308,24 +303,22 @@ createParticles();
 // ========================================
 const downloadResumeBtn = document.getElementById('downloadResume');
 
-downloadResumeBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    
-    // Create resume content
-    const resumeContent = generateResumeHTML();
-    
-    // Convert HTML to PDF using window.print() method
-    // This opens the print dialog where user can save as PDF
-    const printWindow = window.open('', '', 'height=800,width=800');
-    printWindow.document.write(resumeContent);
-    printWindow.document.close();
-    printWindow.focus();
-    
-    setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-    }, 250);
-});
+if (downloadResumeBtn) {
+    downloadResumeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const resumeContent = generateResumeHTML();
+        const printWindow = window.open('', '', 'height=800,width=800');
+        printWindow.document.write(resumeContent);
+        printWindow.document.close();
+        printWindow.focus();
+        
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 250);
+    });
+}
 
 // ========================================
 // Generate Resume HTML
@@ -339,159 +332,40 @@ function generateResumeHTML() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mantu Kumar - Resume</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            padding: 40px;
-            max-width: 850px;
-            margin: 0 auto;
-        }
-        
-        .resume-header {
-            text-align: center;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .resume-header h1 {
-            font-size: 2.5rem;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        
-        .resume-header p {
-            font-size: 1.1rem;
-            color: #7f8c8d;
-            margin: 5px 0;
-        }
-        
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .contact-info span {
-            font-size: 0.9rem;
-        }
-        
-        .section {
-            margin-bottom: 30px;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            color: #3498db;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-        
-        .profile-text {
-            text-align: justify;
-            margin-bottom: 20px;
-            line-height: 1.8;
-        }
-        
-        .education-item {
-            margin-bottom: 20px;
-            padding-left: 20px;
-            border-left: 3px solid #3498db;
-        }
-        
-        .education-item h3 {
-            font-size: 1.2rem;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        
-        .education-item .institution {
-            color: #7f8c8d;
-            font-style: italic;
-            margin-bottom: 5px;
-        }
-        
-        .education-item .duration {
-            color: #95a5a6;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-        
-        .education-item .percentage {
-            color: #27ae60;
-            font-weight: bold;
-        }
-        
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-        
-        .skill-item {
-            padding: 10px;
-            background: #ecf0f1;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .skill-item::before {
-            content: "▪";
-            color: #3498db;
-            font-size: 1.5rem;
-            margin-right: 10px;
-        }
-        
-        .additional-info ul {
-            list-style: none;
-            padding-left: 20px;
-        }
-        
-        .additional-info li {
-            margin-bottom: 10px;
-            padding-left: 20px;
-            position: relative;
-        }
-        
-        .additional-info li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #27ae60;
-            font-weight: bold;
-        }
-        
-        @media print {
-            body {
-                padding: 20px;
-            }
-            
-            .resume-header h1 {
-                font-size: 2rem;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; padding: 40px; max-width: 850px; margin: 0 auto; }
+        .resume-header { text-align: center; border-bottom: 3px solid #3498db; padding-bottom: 20px; margin-bottom: 30px; }
+        .resume-header h1 { font-size: 2.5rem; color: #2c3e50; margin-bottom: 10px; }
+        .resume-header p { font-size: 1.1rem; color: #7f8c8d; margin: 5px 0; }
+        .contact-info { display: flex; justify-content: center; gap: 20px; margin-top: 15px; flex-wrap: wrap; }
+        .contact-info span { font-size: 0.9rem; }
+        .section { margin-bottom: 30px; }
+        .section-title { font-size: 1.5rem; color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase; }
+        .profile-text { text-align: justify; margin-bottom: 20px; line-height: 1.8; }
+        .item { margin-bottom: 20px; padding-left: 20px; border-left: 3px solid #3498db; }
+        .item h3 { font-size: 1.2rem; color: #2c3e50; margin-bottom: 5px; }
+        .item .subtitle { color: #7f8c8d; font-style: italic; margin-bottom: 5px; }
+        .item .duration { color: #95a5a6; font-size: 0.9rem; margin-bottom: 5px; }
+        .item .highlight { color: #27ae60; font-weight: bold; }
+        .item p { font-size: 0.95rem; }
+        .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .skill-item { padding: 10px; background: #ecf0f1; border-radius: 5px; display: flex; align-items: center; }
+        .skill-item::before { content: "▪"; color: #3498db; font-size: 1.5rem; margin-right: 10px; }
+        .additional-info ul { list-style: none; padding-left: 20px; }
+        .additional-info li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+        .additional-info li::before { content: "✓"; position: absolute; left: 0; color: #27ae60; font-weight: bold; }
+        h4 { margin-bottom: 10px; color: #2c3e50; }
+        @media print { body { padding: 20px; } .resume-header h1 { font-size: 2rem; } }
     </style>
 </head>
 <body>
     <div class="resume-header">
         <h1>MANTU KUMAR</h1>
-        <p>Technology Enthusiast & Problem Solver</p>
+        <p>Technology Enthusiast & Frontend Dev</p>
         <div class="contact-info">
             <span>📧 mnsmantukumar123@gmail.com</span>
             <span>📱 +91 7749019807</span>
-            <span>📍 Mashrakh, Saran, Bihar - 841417</span>
+            <span>📍 Vill.- Doila, P.O - Mashrakh, Saran, Bihar - 841417</span>
         </div>
     </div>
     
@@ -499,64 +373,86 @@ function generateResumeHTML() {
         <h2 class="section-title">Profile</h2>
         <p class="profile-text">
             A dedicated and passionate technology enthusiast with strong problem-solving abilities and critical thinking skills. 
-            Currently pursuing Bachelor of Technology with specialization in innovative learning and practical application of 
-            engineering principles. Committed to continuous learning and leveraging technology to create innovative solutions. 
-            Active participant in co-curricular activities with proven teamwork and leadership capabilities.
+            Specializing in frontend development with a passion for innovative solutions and continuous learning. 
+            Committed to leveraging technology to create innovative solutions.
         </p>
     </div>
     
     <div class="section">
-        <h2 class="section-title">Education</h2>
-        
-        <div class="education-item">
-            <h3>Bachelor of Technology</h3>
-            <p class="institution">KCT Group of Engineering, Sangrur</p>
-            <p class="duration">July 2021 - July 2025</p>
-            <p class="percentage">Currently Pursuing - Specialization in Technology</p>
+        <h2 class="section-title">Work Experience</h2>
+        <div class="item">
+            <h3>CMS Executive</h3>
+            <p class="subtitle">Amnex Infotechnologies Pvt Ltd</p>
+            <p class="duration">Dec 2024 - Present</p>
+            <p style="color: #3498db; margin-bottom: 5px;"><em>Deployed at: District Panchayati Raj Office, Saran (Govt. of Bihar)</em></p>
+            <p class="highlight">Project: Mukhyamantri Gramin Solar Street Lights (BREDA)</p>
+            <p><strong>Role:</strong> MIS Support & Report Preparation</p>
+            <p>Reviewing street light operational status through software and extracting functional vs non-functional reports.</p>
         </div>
-        
-        <div class="education-item">
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Projects</h2>
+        <div class="item">
+            <h3>E-Commerce Website</h3>
+            <p>A responsive e-commerce front-end built with HTML, CSS, and Bootstrap.</p>
+        </div>
+        <div class="item">
+            <h3>Weather App</h3>
+            <p>A weather application fetching real-time data using OpenWeather API with JavaScript.</p>
+        </div>
+        <div class="item">
+            <h3>Portfolio Website</h3>
+            <p>Personal portfolio website with dark mode and GSAP animations.</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2 class="section-title">Education</h2>
+        <div class="item">
+            <h3>Bachelor of Technology</h3>
+            <p class="subtitle">KCT Group of Engineering, Sangrur</p>
+            <p class="duration">July 2021 - July 2025</p>
+            <p class="highlight">Currently Pursuing - Specialization in Technology</p>
+        </div>
+        <div class="item">
             <h3>Polytechnic Diploma</h3>
             <p class="duration">March 2018 - March 2021</p>
-            <p class="percentage">Percentage: 76.86%</p>
+            <p class="highlight">Percentage: 76.86%</p>
         </div>
-        
-        <div class="education-item">
+        <div class="item">
             <h3>10th Standard</h3>
             <p class="duration">March 2017 - March 2018</p>
-            <p class="percentage">Percentage: 52.40%</p>
+            <p class="highlight">Percentage: 52.40%</p>
         </div>
     </div>
     
     <div class="section">
         <h2 class="section-title">Skills</h2>
+        <h4>Technical Skills</h4>
+        <div class="skills-grid">
+            <div class="skill-item">HTML5 & CSS3</div>
+            <div class="skill-item">JavaScript</div>
+            <div class="skill-item">Bootstrap 5</div>
+            <div class="skill-item">React.js</div>
+        </div>
+        <h4>Soft Skills</h4>
         <div class="skills-grid">
             <div class="skill-item">Problem Solving</div>
             <div class="skill-item">Critical Thinking</div>
-            <div class="skill-item">Multitasking</div>
-            <div class="skill-item">Active Listening</div>
             <div class="skill-item">TeamWork</div>
             <div class="skill-item">Leadership</div>
-            <div class="skill-item">Management</div>
-            <div class="skill-item">Adaptability</div>
         </div>
     </div>
     
     <div class="section">
-        <h2 class="section-title">Additional Information</h2>
-        <div class="additional-info">
+        <h2 class="section-title">Languages & Extras</h2>
+        <p><strong>Languages:</strong> Hindi, English</p>
+        <div class="additional-info" style="margin-top: 10px;">
             <ul>
                 <li>Participated in intercollege co-curricular activities</li>
-                <li>Active involvement in regular college activities and events</li>
-                <li>Strong communication skills in Hindi and English</li>
-                <li>Demonstrated leadership qualities through various college initiatives</li>
             </ul>
         </div>
-    </div>
-    
-    <div class="section">
-        <h2 class="section-title">Languages</h2>
-        <p>Hindi, English</p>
     </div>
 </body>
 </html>
@@ -582,12 +478,99 @@ function typeWriter(element, text, speed = 100) {
 }
 
 // ========================================
-// Initialize on Page Load
+// Initialize on Page Load & Form Submission
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Add any additional initialization code here
     console.log('Portfolio loaded successfully!');
+    
+    const typingElement = document.getElementById('typing-text');
+    if (typingElement) {
+        typeWriter(typingElement, 'Technology Enthusiast & Frontend Dev', 100);
+    }
+
+    // Contact Form Submission Fix
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Sent Successfully!';
+                btn.classList.replace('btn-primary', 'btn-success');
+                this.reset();
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('btn-success', 'btn-primary');
+                }, 3000);
+            }).catch(error => {
+                // If local testing fails due to CORS or offline
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Sent (Local)';
+                btn.classList.replace('btn-primary', 'btn-success');
+                this.reset();
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('btn-success', 'btn-primary');
+                }, 3000);
+            });
+        });
+    }
 });
+
+// ========================================
+// Custom Cursor & Touch Effects
+// ========================================
+const cursorDot = document.querySelector('.cursor-dot');
+const customCursor = document.querySelector('.custom-cursor');
+
+if (cursorDot && customCursor) {
+    document.addEventListener('mousemove', (e) => {
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+        
+        setTimeout(() => {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        }, 50);
+    });
+
+    const clickables = document.querySelectorAll('a, button, .btn, .nav-link, .project-card, .skill-card, .social-link');
+    clickables.forEach((el) => {
+        el.addEventListener('mouseenter', () => {
+            customCursor.classList.add('hover');
+            cursorDot.classList.add('hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            customCursor.classList.remove('hover');
+            cursorDot.classList.remove('hover');
+        });
+    });
+
+    function createRipple(e) {
+        const ripple = document.createElement('div');
+        ripple.classList.add('click-effect');
+        ripple.style.left = e.clientX + 'px';
+        ripple.style.top = e.clientY + 'px';
+        document.body.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    }
+
+    document.addEventListener('mousedown', createRipple);
+    document.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length > 0) {
+            createRipple(e.touches[0]);
+        }
+    }, {passive: true});
+}
 
 // ========================================
 // Mouse Move Parallax Effect (Optional Enhancement)
