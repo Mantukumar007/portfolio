@@ -996,6 +996,143 @@ section {
     100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
 }
 
+/* Scroll Progress Bar */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--gradient-3);
+    z-index: 1050;
+    transition: width 0.1s;
+}
+
+/* SVG Waves Divider */
+.hero-section {
+    position: relative;
+}
+.custom-shape-divider-bottom {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+.custom-shape-divider-bottom svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 70px;
+}
+.custom-shape-divider-bottom .shape-fill {
+    fill: #050814;
+    transition: fill 0.3s ease;
+}
+
+/* Light Mode Overrides */
+body.light-mode {
+    --dark-bg: #f8f9fa;
+    --text-color: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 0 25px rgba(52, 152, 219, 0.2);
+}
+
+body.light-mode .hero-section {
+    background: var(--dark-bg);
+}
+
+body.light-mode h1, body.light-mode h2, body.light-mode h3, body.light-mode h4, body.light-mode h5 {
+    color: var(--secondary-color);
+}
+body.light-mode p {
+    color: var(--text-color);
+}
+body.light-mode .text-primary {
+    color: var(--primary-color) !important;
+}
+
+body.light-mode .skill-card, body.light-mode .project-card, body.light-mode .timeline-content, body.light-mode .info-item, body.light-mode .contact-info, body.light-mode .contact-form {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+body.light-mode .custom-shape-divider-bottom .shape-fill {
+    fill: #f8f9fa;
+}
+
+body.light-mode .navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+body.light-mode .navbar.scrolled .nav-link {
+    color: var(--secondary-color) !important;
+}
+body.light-mode .navbar.scrolled .nav-link.active {
+    color: var(--primary-color) !important;
+}
+body.light-mode .navbar.scrolled .navbar-brand {
+    color: var(--secondary-color) !important;
+}
+body.light-mode .btn-outline-light {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+body.light-mode .btn-outline-light:hover {
+    background: var(--secondary-color);
+    color: #fff;
+}
+body.light-mode .custom-cursor {
+    border-color: var(--primary-color);
+}
+body.light-mode .custom-cursor.hover {
+    background-color: rgba(52, 152, 219, 0.2);
+}
+
+/* Circular Progress */
+.circular-progress {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+.progress-ring {
+    transform: rotate(-90deg);
+}
+.progress-ring__circle {
+    stroke-dasharray: 326.72;
+    stroke-dashoffset: 326.72;
+    transition: stroke-dashoffset 1.5s ease-in-out;
+}
+.progress-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+.github-stats-img {
+    border: 1px solid var(--glass-border);
+    transition: transform 0.3s ease;
+}
+.github-stats-img:hover {
+    transform: scale(1.02);
+}
+.scroll-top .fa-rocket {
+    transition: transform 0.3s ease;
+}
+.scroll-top.fly-up .fa-rocket {
+    transform: translateY(-100px) scale(0.5);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
 /* ========================================
    Responsive Design
 ======================================== */

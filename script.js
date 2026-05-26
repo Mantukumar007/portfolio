@@ -262,11 +262,59 @@ window.addEventListener('scroll', () => {
 });
 
 scrollTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    scrollTopBtn.classList.add('fly-up');
+    
+    // Play click sound if available
+    if (typeof clickSound !== 'undefined') {
+        clickSound.currentTime = 0;
+        clickSound.play().catch(e => {});
+    }
+
+    setTimeout(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        setTimeout(() => {
+            scrollTopBtn.classList.remove('fly-up');
+        }, 500);
+    }, 400);
 });
+
+// ========================================
+// Circular Progress Animation
+// ========================================
+const progressCircles = document.querySelectorAll('.circular-progress');
+if (progressCircles.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const circle = entry.target.querySelector('.progress-ring__circle');
+                const percent = entry.target.getAttribute('data-percent');
+                if (circle && percent) {
+                    const radius = circle.r.baseVal.value;
+                    const circumference = radius * 2 * Math.PI;
+                    const offset = circumference - (percent / 100) * circumference;
+                    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                    circle.style.strokeDashoffset = offset;
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    progressCircles.forEach(circle => {
+        observer.observe(circle);
+    });
+}
+
+// ========================================
+// Sound Effects (Micro-interactions)
+// ========================================
+const hoverSound = new Audio('https://assets.mixkit.co/active_storage/sfx/1120/1120-preview.mp3');
+const clickSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2574/2574-preview.mp3');
+hoverSound.volume = 0.1;
+clickSound.volume = 0.2;
 
 // ========================================
 // Particle Effect
@@ -395,7 +443,8 @@ function generateResumeHTML() {
         <h2 class="section-title">Projects</h2>
         <div class="item">
             <h3>E-Commerce Website</h3>
-            <p>A responsive e-commerce front-end built with HTML, CSS, and Bootstrap.</p>
+            <p>A responsive e-commerce front-end built with HTML, CSS, and Bootstrap. <br>
+            <small><a href="https://mswholesale.netlify.app/" target="_blank" style="color:#3498db;text-decoration:none;">🔗 Live Demo</a> | <a href="https://github.com/Naveenk1013/mscoconut" target="_blank" style="color:#3498db;text-decoration:none;">📁 GitHub</a></small></p>
         </div>
         <div class="item">
             <h3>Weather App</h3>
@@ -403,7 +452,8 @@ function generateResumeHTML() {
         </div>
         <div class="item">
             <h3>Portfolio Website</h3>
-            <p>Personal portfolio website with dark mode and GSAP animations.</p>
+            <p>Personal portfolio website with dark mode and GSAP animations. <br>
+            <small><a href="https://mantukumar-portfolio.vercel.app/" target="_blank" style="color:#3498db;text-decoration:none;">🔗 Live Demo</a> | <a href="https://github.com/Mantukumar007/portfolio" target="_blank" style="color:#3498db;text-decoration:none;">📁 GitHub</a></small></p>
         </div>
     </div>
     
@@ -412,8 +462,8 @@ function generateResumeHTML() {
         <div class="item">
             <h3>Bachelor of Technology</h3>
             <p class="subtitle">KCT Group of Engineering, Sangrur</p>
-            <p class="duration">July 2021 - July 2025</p>
-            <p class="highlight">Currently Pursuing - Specialization in Technology</p>
+            <p class="duration">2022 - 2025</p>
+            <p class="highlight">Completed - Specialization in Technology</p>
         </div>
         <div class="item">
             <h3>Polytechnic Diploma</h3>
@@ -460,21 +510,39 @@ function generateResumeHTML() {
 }
 
 // ========================================
-// Typing Effect for Hero Title (Optional)
+// Typing Effect for Hero Title
 // ========================================
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
+const roles = ["Technology Enthusiast", "Frontend Developer", "CMS Executive"];
+let roleIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typeElement = null;
+
+function typeWriterEffect() {
+    if (!typeElement) return;
     
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
+    const currentRole = roles[roleIndex];
+    
+    if (isDeleting) {
+        typeElement.innerHTML = currentRole.substring(0, charIndex - 1);
+        charIndex--;
+    } else {
+        typeElement.innerHTML = currentRole.substring(0, charIndex + 1);
+        charIndex++;
     }
     
-    type();
+    let typeSpeed = isDeleting ? 50 : 100;
+    
+    if (!isDeleting && charIndex === currentRole.length) {
+        typeSpeed = 2000;
+        isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+        typeSpeed = 500;
+    }
+    
+    setTimeout(typeWriterEffect, typeSpeed);
 }
 
 // ========================================
@@ -483,10 +551,58 @@ function typeWriter(element, text, speed = 100) {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Portfolio loaded successfully!');
     
-    const typingElement = document.getElementById('typing-text');
-    if (typingElement) {
-        typeWriter(typingElement, 'Technology Enthusiast & Frontend Dev', 100);
+    typeElement = document.getElementById('typing-text');
+    if (typeElement) {
+        typeWriterEffect();
     }
+
+    // Vanilla Tilt Init
+    if (typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(document.querySelectorAll(".skill-card, .project-card, .about-img-wrapper"), {
+            max: 15,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2
+        });
+    }
+
+    // Theme Toggle
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const icon = themeToggleBtn.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        });
+    }
+
+    // Scroll Progress
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        const progressEl = document.getElementById("scroll-progress");
+        if (progressEl) progressEl.style.width = scrolled + "%";
+    });
+
+    // Sound Effect Listeners
+    const soundClickables = document.querySelectorAll('button, .btn, .nav-link, .social-link');
+    soundClickables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            hoverSound.currentTime = 0;
+            hoverSound.play().catch(e => {});
+        });
+        el.addEventListener('click', () => {
+            clickSound.currentTime = 0;
+            clickSound.play().catch(e => {});
+        });
+    });
 
     // Contact Form Submission Fix
     const contactForm = document.getElementById('contactForm');

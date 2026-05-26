@@ -1,0 +1,21 @@
+{
+  "name": "Mantu Kumar Portfolio",
+  "short_name": "MK Portfolio",
+  "description": "Personal Portfolio of Mantu Kumar",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050814",
+  "theme_color": "#3498db",
+  "icons": [
+    {
+      "src": "profile.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "profile.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
