@@ -20,12 +20,8 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        if (response) {
-          return response; // Cache hit
-        }
-        return fetch(event.request).catch(() => {
-          // Fallback if offline and not in cache
-        });
+        // Return cache hit or fetch from network
+        return response || fetch(event.request);
       })
   );
 });

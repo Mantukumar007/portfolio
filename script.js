@@ -265,9 +265,8 @@ scrollTopBtn.addEventListener('click', () => {
     scrollTopBtn.classList.add('fly-up');
     
     // Play click sound if available
-    if (typeof clickSound !== 'undefined') {
-        clickSound.currentTime = 0;
-        clickSound.play().catch(e => {});
+    if (typeof playClickSound !== 'undefined') {
+        playClickSound();
     }
 
     setTimeout(() => {
@@ -311,10 +310,25 @@ if (progressCircles.length > 0) {
 // ========================================
 // Sound Effects (Micro-interactions)
 // ========================================
-const hoverSound = new Audio('https://assets.mixkit.co/active_storage/sfx/1120/1120-preview.mp3');
-const clickSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2574/2574-preview.mp3');
-hoverSound.volume = 0.1;
-clickSound.volume = 0.2;
+let hoverSound, clickSound;
+
+function playHoverSound() {
+    if (!hoverSound) {
+        hoverSound = new Audio('https://assets.mixkit.co/active_storage/sfx/1120/1120-preview.mp3');
+        hoverSound.volume = 0.1;
+    }
+    hoverSound.currentTime = 0;
+    hoverSound.play().catch(e => {});
+}
+
+function playClickSound() {
+    if (!clickSound) {
+        clickSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2574/2574-preview.mp3');
+        clickSound.volume = 0.2;
+    }
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e => {});
+}
 
 // ========================================
 // Particle Effect
@@ -595,12 +609,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const soundClickables = document.querySelectorAll('button, .btn, .nav-link, .social-link');
     soundClickables.forEach(el => {
         el.addEventListener('mouseenter', () => {
-            hoverSound.currentTime = 0;
-            hoverSound.play().catch(e => {});
+            playHoverSound();
         });
         el.addEventListener('click', () => {
-            clickSound.currentTime = 0;
-            clickSound.play().catch(e => {});
+            playClickSound();
         });
     });
 
