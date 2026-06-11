@@ -331,34 +331,28 @@ function playClickSound() {
 }
 
 // ========================================
-// Particle Effect
+// Vanta.js 3D Background Effect
 // ========================================
-function createParticles() {
-    const particlesContainer = document.getElementById('particles');
-    const particleCount = 30;
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        
-        const size = Math.random() * 5 + 2;
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-        const delay = Math.random() * 15;
-        const duration = Math.random() * 10 + 10;
-        
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${posX}%`;
-        particle.style.top = `${posY}%`;
-        particle.style.animationDelay = `${delay}s`;
-        particle.style.animationDuration = `${duration}s`;
-        
-        particlesContainer.appendChild(particle);
+let vantaEffect;
+function initVanta() {
+    if (typeof VANTA !== 'undefined' && VANTA.NET) {
+        vantaEffect = VANTA.NET({
+            el: "#home",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x3498db,
+            backgroundColor: document.body.classList.contains('light-mode') ? 0xf8f9fa : 0x050814,
+            points: 12.00,
+            maxDistance: 22.00,
+            spacing: 18.00
+        });
     }
 }
-
-createParticles();
 
 // ========================================
 // Download Resume Function
@@ -566,6 +560,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeElement) {
         typeWriterEffect();
     }
+    
+    // Initialize Vanta.js 3D Background
+    initVanta();
 
     // Vanilla Tilt Init
     if (typeof VanillaTilt !== 'undefined') {
@@ -582,13 +579,71 @@ document.addEventListener('DOMContentLoaded', () => {
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
             const icon = themeToggleBtn.querySelector('i');
-            if (document.body.classList.contains('light-mode')) {
+            
+            if (isLight) {
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
             } else {
                 icon.classList.remove('fa-moon');
                 icon.classList.add('fa-sun');
+            }
+            
+            if (vantaEffect) {
+                vantaEffect.setOptions({
+                    backgroundColor: isLight ? 0xf8f9fa : 0x050814
+                });
+            }
+        });
+    }
+
+    // Project Filtering
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectItems = document.querySelectorAll('.project-item');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterBtns.forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            btn.classList.add('active');
+
+            const filterValue = btn.getAttribute('data-filter');
+
+            projectItems.forEach(item => {
+                if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                    item.classList.remove('hide');
+                    item.classList.add('show');
+                } else {
+                    item.classList.remove('show');
+                    item.classList.add('hide');
+                }
+            });
+        });
+    });
+
+    // Swiper Initialization for Testimonials
+    if (typeof Swiper !== 'undefined') {
+        new Swiper('.testimonial-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                },
+                992: {
+                    slidesPerView: 3,
+                }
             }
         });
     }
@@ -627,22 +682,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: new FormData(this),
                 headers: { 'Accept': 'application/json' }
             }).then(response => {
-                btn.innerHTML = '<i class="fas fa-check me-2"></i>Sent Successfully!';
-                btn.classList.replace('btn-primary', 'btn-success');
+                btn.innerHTML = originalText;
                 this.reset();
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.classList.replace('btn-success', 'btn-primary');
-                }, 3000);
+                Toastify({
+                    text: "Message Sent Successfully! 🚀",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    style: { background: "linear-gradient(to right, #00b09b, #96c93d)", borderRadius: "10px" }
+                }).showToast();
             }).catch(error => {
-                // If local testing fails due to CORS or offline
-                btn.innerHTML = '<i class="fas fa-check me-2"></i>Sent (Local)';
-                btn.classList.replace('btn-primary', 'btn-success');
+                btn.innerHTML = originalText;
                 this.reset();
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.classList.replace('btn-success', 'btn-primary');
-                }, 3000);
+                Toastify({
+                    text: "Message Sent Successfully (Local Test)! 🚀",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "right",
+                    style: { background: "linear-gradient(to right, #00b09b, #96c93d)", borderRadius: "10px" }
+                }).showToast();
             });
         });
     }
