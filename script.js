@@ -370,7 +370,7 @@ if (downloadResumeBtn) {
         e.preventDefault();
         
         const resumeContent = generateResumeHTML();
-        const printWindow = window.open('', '', 'height=800,width=800');
+        const printWindow = window.open('', '', 'height=1000,width=1000');
         printWindow.document.write(resumeContent);
         printWindow.document.close();
         printWindow.focus();
@@ -487,7 +487,7 @@ function generateResumeHTML() {
         <div class="item">
             <h3>10th Standard</h3>
             <p class="duration">March 2017 - March 2018</p>
-            <p class="highlight">Percentage: 52.40%</p>
+           
         </div>
     </div>
     

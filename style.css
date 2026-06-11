@@ -24,6 +24,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -31,7 +32,7 @@ body {
     background-color: var(--dark-bg);
     color: var(--text-color);
     overflow-x: hidden;
-    line-height: 1.6;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* ========================================
@@ -1227,5 +1228,22 @@ body.light-mode .custom-cursor.hover {
     
     .profile-icon {
         font-size: 150px;
+    }
+
+    .timeline::before {
+        left: 20px;
+    }
+    
+    .timeline-icon {
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .timeline-content {
+        width: calc(100% - 70px);
+        margin-left: 70px !important;
+        padding: 1.5rem;
     }
 }
