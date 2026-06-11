@@ -369,16 +369,24 @@ if (downloadResumeBtn) {
     downloadResumeBtn.addEventListener('click', (e) => {
         e.preventDefault();
         
-        const resumeContent = generateResumeHTML();
-        const printWindow = window.open('', '', 'height=1000,width=1000');
-        printWindow.document.write(resumeContent);
-        printWindow.document.close();
-        printWindow.focus();
+        const originalText = downloadResumeBtn.innerHTML;
+        downloadResumeBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating PDF...';
         
-        setTimeout(() => {
-            printWindow.print();
-            printWindow.close();
-        }, 250);
+        const resumeContent = generateResumeHTML();
+        const element = document.createElement('div');
+        element.innerHTML = resumeContent;
+        
+        const opt = {
+            margin:       10,
+            filename:     'Mantu_Kumar_Resume.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        
+        html2pdf().set(opt).from(element).save().then(() => {
+            downloadResumeBtn.innerHTML = originalText;
+        });
     });
 }
 
@@ -387,40 +395,30 @@ if (downloadResumeBtn) {
 // ========================================
 function generateResumeHTML() {
     return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mantu Kumar - Resume</title>
+    <div style="font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; padding: 30px; width: 100%; max-width: 800px; margin: 0 auto;">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; padding: 40px; max-width: 850px; margin: 0 auto; }
         .resume-header { text-align: center; border-bottom: 3px solid #3498db; padding-bottom: 20px; margin-bottom: 30px; }
-        .resume-header h1 { font-size: 2.5rem; color: #2c3e50; margin-bottom: 10px; }
+        .resume-header h1 { font-size: 2.2rem; color: #2c3e50; margin-bottom: 10px; }
         .resume-header p { font-size: 1.1rem; color: #7f8c8d; margin: 5px 0; }
         .contact-info { display: flex; justify-content: center; gap: 20px; margin-top: 15px; flex-wrap: wrap; }
         .contact-info span { font-size: 0.9rem; }
-        .section { margin-bottom: 30px; }
-        .section-title { font-size: 1.5rem; color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase; }
-        .profile-text { text-align: justify; margin-bottom: 20px; line-height: 1.8; }
-        .item { margin-bottom: 20px; padding-left: 20px; border-left: 3px solid #3498db; }
-        .item h3 { font-size: 1.2rem; color: #2c3e50; margin-bottom: 5px; }
-        .item .subtitle { color: #7f8c8d; font-style: italic; margin-bottom: 5px; }
-        .item .duration { color: #95a5a6; font-size: 0.9rem; margin-bottom: 5px; }
-        .item .highlight { color: #27ae60; font-weight: bold; }
-        .item p { font-size: 0.95rem; }
+        .section { margin-bottom: 20px; page-break-inside: avoid; }
+        .section-title { font-size: 1.4rem; color: #3498db; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase; }
+        .profile-text { text-align: justify; margin-bottom: 15px; line-height: 1.6; font-size: 0.95rem; }
+        .item { margin-bottom: 15px; padding-left: 15px; border-left: 3px solid #3498db; page-break-inside: avoid; }
+        .item h3 { font-size: 1.1rem; color: #2c3e50; margin-bottom: 5px; }
+        .item .subtitle { color: #7f8c8d; font-style: italic; margin-bottom: 5px; font-size: 0.9rem;}
+        .item .duration { color: #95a5a6; font-size: 0.85rem; margin-bottom: 5px; }
+        .item .highlight { color: #27ae60; font-weight: bold; font-size: 0.9rem; }
+        .item p { font-size: 0.9rem; }
         .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
-        .skill-item { padding: 10px; background: #ecf0f1; border-radius: 5px; display: flex; align-items: center; }
-        .skill-item::before { content: "▪"; color: #3498db; font-size: 1.5rem; margin-right: 10px; }
-        .additional-info ul { list-style: none; padding-left: 20px; }
-        .additional-info li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+        .skill-item { padding: 8px; background: #ecf0f1; border-radius: 5px; display: flex; align-items: center; font-size: 0.9rem;}
+        .skill-item::before { content: "▪"; color: #3498db; font-size: 1.2rem; margin-right: 10px; }
+        .additional-info ul { list-style: none; padding-left: 15px; font-size: 0.9rem;}
+        .additional-info li { margin-bottom: 8px; padding-left: 20px; position: relative; }
         .additional-info li::before { content: "✓"; position: absolute; left: 0; color: #27ae60; font-weight: bold; }
-        h4 { margin-bottom: 10px; color: #2c3e50; }
-        @media print { body { padding: 20px; } .resume-header h1 { font-size: 2rem; } }
+        h4 { margin-bottom: 10px; color: #2c3e50; font-size: 1rem; }
     </style>
-</head>
-<body>
     <div class="resume-header">
         <h1>MANTU KUMAR</h1>
         <p>Technology Enthusiast & Frontend Dev</p>
@@ -518,8 +516,7 @@ function generateResumeHTML() {
             </ul>
         </div>
     </div>
-</body>
-</html>
+    </div>
     `;
 }
 
