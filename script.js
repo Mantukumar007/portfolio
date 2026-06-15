@@ -364,23 +364,36 @@ if (downloadResumeBtn) {
         e.preventDefault();
         
         const originalText = downloadResumeBtn.innerHTML;
-        downloadResumeBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating PDF...';
+        downloadResumeBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating Word Doc...';
         
         const resumeContent = generateResumeHTML();
-        const element = document.createElement('div');
-        element.innerHTML = resumeContent;
         
-        const opt = {
-            margin:       10,
-            filename:     'Mantu_Kumar_Resume.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        
-        html2pdf().set(opt).from(element).save().then(() => {
-            downloadResumeBtn.innerHTML = originalText;
+        // Add Microsoft Word namespace headers for proper rendering
+        const preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Mantu Kumar Resume</title></head><body>";
+        const postHtml = "</body></html>";
+        const html = preHtml + resumeContent + postHtml;
+
+        // Create Blob with MS Word MIME type
+        const blob = new Blob(['\ufeff', html], {
+            type: 'application/msword'
         });
+        
+        // Create download link and trigger download
+        const url = URL.createObjectURL(blob);
+        const downloadLink = document.createElement("a");
+        downloadLink.href = url;
+        downloadLink.download = 'Mantu_Kumar_Resume.doc';
+        
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        
+        // Cleanup
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(url);
+        
+        setTimeout(() => {
+            downloadResumeBtn.innerHTML = originalText;
+        }, 800);
     });
 }
 
